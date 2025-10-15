@@ -28,3 +28,4 @@ class LoginPage:
         self.driver.find_element(By.XPATH, self.link_logout_xpath).click()
 
 
+

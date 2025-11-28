@@ -15,7 +15,6 @@ class LoginPage:
         self.driver.find_element(By.ID, self.textbox_user_id).clear()
         self.driver.find_element(By.ID, self.textbox_user_id).send_keys(username)
 
-
     def setPassword(self, password):
         self.driver.find_element(By.ID, self.textbox_password_id).clear()
         self.driver.find_element(By.ID, self.textbox_password_id).send_keys(password)

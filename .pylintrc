@@ -36,8 +36,6 @@ disable=
     C0116,  # Missing function docstring
             # (We allow code without docstrings everywhere)
 
-    C0103,  # Naming style rules relaxed (team flexibility)
-
     W0511,  # TODO comments allowed
 
     R0903,  # Too few public methods
@@ -89,6 +87,11 @@ enable=
 
     # Docstring mismatch (only when docstrings exist)
     R9195
+
+
+[BASIC]
+# Enforce PascalCase / CamelCase for class names (letters only, no numbers)
+class-rgx=[A-Z][a-zA-Z]+$
 
 
 

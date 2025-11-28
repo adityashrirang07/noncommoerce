@@ -1,0 +1,153 @@
+# ===============================================================
+# Pylint Configuration File
+# This file defines Python coding rules for the entire project.
+# Comments explain WHY each setting exists.
+# ===============================================================
+
+
+[MASTER]
+# Ignore folders that do not need linting
+ignore=venv,dist,build,__pycache__
+
+# Save data from previous runs
+persistent=yes
+
+# Number of parallel j obs
+jobs=1
+
+# No C-extensions whitelisted
+extension-pkg-whitelist=
+
+# Load extra plugins:
+# - docparams → checks docstring parameters
+# - mccabe → checks code complexity
+load-plugins=pylint.extensions.docparams,pylint.extensions.mccabe
+
+
+
+[MESSAGES CONTROL]
+
+# ---------------------------------------------------------------
+# DISABLED RULES (We intentionally turn OFF these warnings)
+# ---------------------------------------------------------------
+disable=
+    C0114,  # Missing module docstring
+    C0115,  # Missing class docstring
+    C0116,  # Missing function docstring
+            # (We allow code without docstrings everywhere)
+
+    C0103,  # Naming style rules relaxed (team flexibility)
+
+    W0511,  # TODO comments allowed
+
+    R0903,  # Too few public methods
+    R0902,  # Too many instance attributes
+
+    R0913,  # Too many arguments in function
+    R0914,  # Too many local variables
+    R0915,  # Too many statements
+            # (These are common in automation/testing code)
+
+    W1203,  # Allow f-strings in logging
+
+    W0621,  # Allow redefining name from outer scope
+
+
+
+# ---------------------------------------------------------------
+# ENABLED RULES (Important for clean code)
+# ---------------------------------------------------------------
+enable=
+    # Basic formatting & syntax
+    W0311,  # Bad indentation
+    E0001,  # Syntax error
+    C0303,  # Trailing whitespace
+    C0304,  # Missing final newline
+    C0305,  # Too many blank lines at end
+    C0326,  # Bad spacing around operators
+    C0330,  # Bad hanging indentation
+
+    # Import rules
+    W0611,  # Unused import
+    W0612,  # Unused variable
+    W0613,  # Unused argument
+    W0614,  # Unused wildcard import
+    E0401,  # Import error
+    W0404,  # Module reimported
+
+    # Safety rules
+    E0602,  # Undefined variable
+    W0702,  # Bare except not allowed
+    W0703,  # Too general exception
+
+    # Structure
+    C0301,  # Line too long
+    C0321,  # Multiple statements on one line
+
+    # Duplicate code detection
+    R0801,  # Duplicate code detected
+
+    # Docstring mismatch (only when docstrings exist)
+    R9195
+
+
+
+[FORMAT]
+# Max characters allowed in one line
+max-line-length=120
+
+# Maximum number of lines allowed in a single file
+max-module-lines=2000
+
+# Use 4 spaces (NOT tabs)
+indent-string='    '
+
+
+
+[DESIGN]
+# Complexity limits (make sure functions/classes are manageable)
+max-args=10          # Max allowed function arguments
+max-locals=25        # Max local variables
+max-branches=20      # Max number of branches (if/elif)
+max-statements=80    # Max number of statements in a function
+max-parents=7        # Max number of parent classes (inheritance)
+max-attributes=15    # Max attributes inside a class
+
+
+
+[TYPECHECK]
+# These libraries use dynamic imports → pylint cannot analyze them
+# We ask pylint to ignore type warnings for these.
+ignored-modules=
+    selenium,
+    pytest,
+    requests
+
+
+
+[REPORTS]
+output-format=colorized   # Show colored output in terminal
+reports=no                # Do NOT generate long summary reports
+score=yes                 # Show final pylint score (0 to 10)
+
+
+
+[LOGGING]
+logging-modules=logging   # Ensures logging module is used correctly
+
+
+
+[SIMILARITIES]
+# Duplicate code detection settings
+min-similarity-lines=6   # Code repeated for 6+ lines triggers warning
+ignore-comments=yes      # Do not treat repeated comments as duplicates
+ignore-docstrings=yes    # Ignore repeated docstrings
+ignore-imports=yes       # Ignore repeated import blocks
+
+
+
+[IMPORTS]
+# Helps pylint understand import groups
+known-standard-library=
+known-third-party=pytest,selenium,requests
+known-local-folder=

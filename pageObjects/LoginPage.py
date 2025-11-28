@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class LoginPage:
+class loginPage:
     textbox_user_id = "Email"
     textbox_password_id = "Password"
     button_login_xpath = "//button[contains(text(),'Log in')]"

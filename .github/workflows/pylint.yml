@@ -1,68 +1,70 @@
 # ============================================================
-# GitHub Actions Workflow: Pylint Quality Check
-# This workflow runs automatically on every Pull Request to main
-# It checks only modified .py files and fails if lint errors exist
+# 🚀 GitHub Action: Python Code Quality and Style Check (Pylint)
+# Runs automatically on Pull Requests to ensure clean, maintainable code.
+# Displays inline errors and friendly summary output.
 # ============================================================
 
-name: Pylint Quality Check   # Visible name inside GitHub Actions tab
+name: 🧹 Python Code Quality Check (Pylint)
 
 on:
-  pull_request:              # Trigger workflow when PR is created or updated
-    branches: [ "main" ]     # Only for PRs targeting "main" branch
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   pylint:
-    runs-on: ubuntu-latest   # Use latest Linux runner environment in GitHub
+    runs-on: ubuntu-latest
 
     steps:
       # --------------------------------------------------------
-      # STEP 1: Checkout code from repository into the runner
-      # fetch-depth: 0 enables full history so git diff works accurately
+      # 📥 Checkout code with full history (required for git diff)
       # --------------------------------------------------------
-      - name: Checkout repository
+      - name: 📦 Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0     # Needed to compare current & previous commits
+          fetch-depth: 0
 
       # --------------------------------------------------------
-      # STEP 2: Set up Python environment
-      # This installs Python 3.10 in the runner
+      # 🐍 Setup Python environment
       # --------------------------------------------------------
-      - name: Set up Python
+      - name: 🐍 Setup Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
       # --------------------------------------------------------
-      # STEP 3: Install dependencies
-      # - upgrade pip for reliable installation
-      # - read and install libraries listed in requirements.txt
-      # - install pylint tool
+      # 📦 Install dependencies
       # --------------------------------------------------------
-      - name: Install dependencies
+      - name: 📥 Install dependencies & pylint
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pylint
 
       # --------------------------------------------------------
-      # STEP 4: Run pylint ONLY on changed .py files
-      # - git diff lists modified files between current commit & previous
-      # - grep extracts only Python (.py) files
-      # - if files exist, pylint runs against them
-      # - if no python files changed, skip
+      # 🔍 Run pylint only on changed .py files
       # --------------------------------------------------------
-      - name: Run pylint on changed files
+      - name: 🔍 Run Pylint on changed Python files
         run: |
-          # Identify changed files that end with .py extension
-          changed_files=$(git diff --name-only HEAD^ HEAD | grep -E "\.py$")
-          
-          # Print them in the logs
-          echo "Changed files: $changed_files"
-          
-          # Check if there are any Python files to lint
+          # Determine changed Python files between main and PR commit
+          changed_files=$(git diff --name-only origin/main...HEAD | grep -E "\.py$")
+          echo "Changed Python Files: $changed_files"
+
           if [ -n "$changed_files" ]; then
-             pylint $changed_files     # Run pylint on those files
+            echo "Running pylint and generating report..."
+            pylint $changed_files --fail-on=warning | tee pylint-report.txt
           else
-             echo "No Python files changed."  # Skip if no .py files found
+            echo "⚠ No Python files changed. Skipping lint."
           fi
+
+      # --------------------------------------------------------
+      # 📊 Upload pylint report summary into PR page
+      # --------------------------------------------------------
+      - name: 📊 Upload pylint summary report
+        if: always()
+        run: |
+          echo "### 🧹 Pylint Report Summary" >> $GITHUB_STEP_SUMMARY
+          cat pylint-report.txt >> $GITHUB_STEP_SUMMARY

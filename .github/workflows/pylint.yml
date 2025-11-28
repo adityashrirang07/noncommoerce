@@ -2,15 +2,17 @@ name: Pylint Quality Check
 
 on:
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   pylint:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Important!
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -23,7 +25,7 @@ jobs:
           pip install -r requirements.txt
           pip install pylint
 
-      - name: Run pylint only on changed files
+      - name: Run pylint on changed files
         run: |
           changed_files=$(git diff --name-only HEAD^ HEAD | grep -E "\.py$")
           echo "Changed files: $changed_files"

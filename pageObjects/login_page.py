@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 
-
 class LoginPage:
     textbox_user_id = "Email"
     textbox_password_id = "Password"
@@ -9,11 +8,6 @@ class LoginPage:
 
     def __init__(self, driver):
         self.driver = driver
-
-
-
-
-
 
     def set_username(self, username):
         self.driver.find_element(By.ID, self.textbox_user_id).clear()

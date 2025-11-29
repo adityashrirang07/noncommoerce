@@ -15,7 +15,6 @@ class LoginPage:
 
 
 
-
     def set_username(self, username):
         self.driver.find_element(By.ID, self.textbox_user_id).clear()
         self.driver.find_element(By.ID, self.textbox_user_id).send_keys(username)

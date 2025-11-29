@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-import time
 
 class LoginPage:
     textbox_user_id = "Email"
@@ -14,7 +13,7 @@ class LoginPage:
         self.driver.find_element(By.ID, self.textbox_user_id).clear()
         self.driver.find_element(By.ID, self.textbox_user_id).send_keys(username)
 
-    def Set_password(self, password):
+    def set_password(self, password):
         self.driver.find_element(By.ID, self.textbox_password_id).clear()
         self.driver.find_element(By.ID, self.textbox_password_id).send_keys(password)
 
@@ -23,7 +22,3 @@ class LoginPage:
 
     def click_logout(self):
         self.driver.find_element(By.XPATH, self.link_logout_xpath).click()
-
-
-
-
